@@ -1,7 +1,7 @@
 
 from dash.dependencies import Input, Output, State
 import dash
-from app import app
+from layouts import app
 from nltk.corpus import stopwords
 from nltk.cluster.util import cosine_distance
 import numpy as np
@@ -132,4 +132,4 @@ def hide_graph(input):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
