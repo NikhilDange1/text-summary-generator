@@ -26,6 +26,8 @@ import plotly.graph_objects as go
 
     return sentences'''
 
+server = app.server
+
 def sentence_similarity(sent1, sent2, stopwords=None):
     if stopwords is None:
         stopwords = []
