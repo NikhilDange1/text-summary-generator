@@ -16,18 +16,25 @@ server = app.server
 
 
 app.layout = html.Div(children =
-                [html.H2('Text Summarizer'),
+                [html.Div(html.H2('Text Summary Generator'),className='title-div'),
                  html.Div(children=[
-                    html.Div(children=[dcc.Textarea(id='text',value='',placeholder='Enter or paste text',className='child')],className="grid-item grid-item1"),
-                    html.Div(children=[dcc.Graph(id='cloud',className="child")],className="grid-item grid-item2"),
-                    html.Div(children=[html.Button('Generate Summary',id='summary',className="Button Button-generate_summary")],className="grid-item grid-item3"),
-                    html.Div(children=[dcc.Slider(id='summarize_length',min=3,max=7,step=1,marks={i: '{}'.format(i) for i in range(3,8)},value=5,className='child')],className="grid-item grid-item4"),
                     html.Div(children=[
-                        html.Div(children=[html.H4('Extractive Summary'),
-                        dcc.Textarea(id='preview',value='',className='child')],className="flex")
+                        html.Div(html.H4('Paste text below'),className='flex-item1'),
+                        html.Div(dcc.Textarea(id='text',value='',placeholder='Type or paste text with atleast 5 sentences',className="child tbox"),className='flex-item2')],className="grid-item grid-item1 inner-grid"),
+                    html.Div(children=[
+                        html.Div(html.H4('Word Cloud',style={'align':'center'}),className='flex-item1'),
+                        html.Div(dcc.Graph(id='cloud',className='child'),className='flex-item2 cloud-div')
+                        ],className="grid-item grid-item2 inner-grid"),
+                    html.Div(children=[html.Button('Generate Summary',id='summary',className="Button Button-generate_summary"),
+                                       ' Number of Summarized sentences ',
+                                       dcc.Input(id='summarize_length',type='number',min=3,max=10,step=1,value=5)],className="grid-item grid-item3"),
+                    html.Div(children=[],className="grid-item grid-item4"),
+                    html.Div(children=[
+                        html.Div(html.H4('Extractive Summary'),className='flex-item1'),
+                        html.Div(children=dcc.Textarea(id='preview',value='',className="child tbox"),className='flex-item2')
 
-                    ])
+                    ],className='grid-item grid-item4 inner-grid')
 
-                 ],className="child my-container")
+                 ],className="my-container")
 
             ],className="parent")

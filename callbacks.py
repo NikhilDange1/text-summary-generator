@@ -1,5 +1,6 @@
 
 from dash.dependencies import Input, Output, State
+import dash
 from app import app
 from nltk.corpus import stopwords
 from nltk.cluster.util import cosine_distance
@@ -9,6 +10,7 @@ import networkx as nx
 from plotly.tools import mpl_to_plotly
 import matplotlib.pyplot as plt
 import plotly.express as px
+import plotly.graph_objects as go
 
 
 '''def read_article(file_name):
@@ -87,22 +89,45 @@ def generate_summary(text, top_n=5):
 
     # Step 5 - Offcourse, output the summarize texr
     #print("Summarize Text: \n", ". ".join(summarize_text))
-    return ". ".join(summarize_text)
+    return "\n\n".join(summarize_text)
 
 def plot_cloud(text):
     wordcloud = WordCloud().generate(text)
-    return px.imshow(wordcloud)
+    fig = px.imshow(wordcloud)
+    #fig.update_layout(width=500, height=300)
+    fig.update_xaxes(showticklabels=False).update_yaxes(showticklabels=False)
+    fig.update_layout(autosize=False,margin=go.layout.Margin(l=5,r=5,b=5,t=5,pad=2))
+    return fig
 
 @app.callback([Output('preview','value'),
-               Output('cloud','figure')],
+               Output('cloud','figure'),
+               Output('summarize_length','max')],
             [Input('summary','n_clicks')],
             [State('text','value'),
              State('summarize_length','value')])
 def gen(summary,text,summarize_length):
-    if summary is not None and len(text) > 20:
-        fig = plot_cloud(text)
-        return generate_summary(text,summarize_length),fig
-    return '',{}
+    if len(text)==0:
+        sentences=0
+    else:
+        sentences=len(text.split('. '))
+    if summary is not None:
+        text = text.replace('\n',' ')
+        if sentences>=3:
+            fig = plot_cloud(text)
+
+            return generate_summary(text,summarize_length),fig,sentences
+        else:
+            return 'Please enter more than 5 sentences',{} ,10
+    return '',dash.no_update,10
+
+
+@app.callback(Output('cloud', 'style'),
+              [Input('summary','n_clicks')])
+def hide_graph(input):
+    if input:
+        return {'display':'block'}
+    else:
+        return {'display':'none'}
 
 
 
