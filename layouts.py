@@ -10,7 +10,7 @@ from dash.dependencies import Input, Output
 #external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__) #external_stylesheets=external_stylesheets)
-#server = app.server
+server = app.server
 #app.config.suppress_callback_exceptions = True
 
 
@@ -25,9 +25,11 @@ app.layout = html.Div(children =
                         html.Div(html.H4('Word Cloud',style={'align':'center'}),className='flex-item1'),
                         html.Div(dcc.Graph(id='cloud',className='child'),className='flex-item2 cloud-div')
                         ],className="grid-item grid-item2 inner-grid"),
-                    html.Div(children=[html.Button('Generate Summary',id='summary',className="Button Button-generate_summary"),
+                    html.Div(children=[html.Button('Generate Summary',id='summary',className="Button Button-generate_summary",n_clicks_timestamp=0),
                                        ' Number of Summarized sentences ',
-                                       dcc.Input(id='summarize_length',type='number',min=3,max=10,step=1,value=5)],className="grid-item grid-item3"),
+                                       dcc.Input(id='summarize_length',type='number',min=3,max=10,step=1,value=5),
+                                       '  ',
+                                       html.Button('Clear',id='clear',className="Button Button-generate_summary",n_clicks_timestamp=0)],className="grid-item grid-item3"),
                     html.Div(children=[],className="grid-item grid-item4"),
                     html.Div(children=[
                         html.Div(html.H4('Extractive Summary'),className='flex-item1'),
